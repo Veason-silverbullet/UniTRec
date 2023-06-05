@@ -1,0 +1,7 @@
+regex
+huggingface_hub==0.11.0
+tokenizers==0.11.1
+colorama
+tensorboard
+scikit-learn
+nltk

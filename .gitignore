@@ -1,0 +1,12 @@
+__pycache__
+.vscode
+textRec_datasets/newsRec
+textRec_datasets/quoteRec
+textRec_datasets/engageRec
+*.zip
+logs
+ckpt_models
+predictions
+best_model
+*.debug
+nohup.*
