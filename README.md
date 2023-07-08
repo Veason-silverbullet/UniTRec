@@ -20,6 +20,4 @@ Suppose that two GPUs are available for training.
 
 ## Note
 The transformer codebase is adapted from [**Huggingface Transoformers**](https://github.com/huggingface/transformers). The **UniTRec Model** is written at [transformers/models/UniTRec/modeling_unitrec.py](https://github.com/Veason-silverbullet/UniTRec/blob/master/transformers/models/UniTRec/modeling_unitrec.py).
-
-The codes are runnable but may not well-organized to read. Because the author is very busy with his graduation work, and he is even too painful to sleep everyday. The repo will be refactored in early July, the author promises. Please stay tuned.
 <br/><br/>
