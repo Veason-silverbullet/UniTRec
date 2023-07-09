@@ -1,5 +1,5 @@
 # UniTRec
-This repository releases the code of paper [**UniTRec: A Unified Text-to-Text Transformer and Joint Contrastive Learning Framework for Text-based Recommendation** (ACL-2023 Short Paper)](https://arxiv.org/pdf/2305.15756.pdf).
+This repository releases the code of paper [**UniTRec: A Unified Text-to-Text Transformer and Joint Contrastive Learning Framework for Text-based Recommendation** (ACL-2023 Short Paper)](https://aclanthology.org/2023.acl-short.100.pdf).
 <br/><br/>
 
 
@@ -21,3 +21,22 @@ Suppose that two GPUs are available for training.
 ## Note
 The transformer codebase is adapted from [**Huggingface Transoformers**](https://github.com/huggingface/transformers). The **UniTRec Model** is written at [transformers/models/UniTRec/modeling_unitrec.py](https://github.com/Veason-silverbullet/UniTRec/blob/master/transformers/models/UniTRec/modeling_unitrec.py).
 <br/><br/>
+
+
+## Citation
+```
+@inproceedings{mao-etal-2023-unitrec,
+    title = "UniTRec: A Unified Text-to-Text Transformer and Joint Contrastive Learning Framework for Text-based Recommendation",
+    author = "Mao, Zhiming  and
+              Wang, Huimin  and
+              Du, Yiming  and
+              Wong, Kam-Fai",
+    booktitle = "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.acl-short.100",
+    pages = "1160--1170"
+}
+```
