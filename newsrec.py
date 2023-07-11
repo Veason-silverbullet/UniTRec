@@ -41,7 +41,7 @@ def parse_config():
     parser.add_argument('--lr_warm_up_ratio', type=float, default=0.05, help='Larning rate warm-up ratio')
     parser.add_argument('--fp16', type=int, default=1, choices=[0, 1], help='Whether use fp16')
     parser.add_argument('--gradient_checkpoint', type=int, default=1, choices=[0, 1], help='Whether use gradient checkpointing')
-    parser.add_argument('--negative_sample_num', type=int, default=4, help='Number of negative samples')
+    parser.add_argument('--negative_sample_num', type=int, default=4, help='Number of negative samples') # This configuration empirically follows https://aclanthology.org/2022.findings-emnlp.491
     parser.add_argument('--ppl_loss', type=int, default=1, choices=[0, 1], help='Whether use perplexity contrastive loss')
     parser.add_argument('--dis_loss', type=int, default=1, choices=[0, 1], help='Whether use discriminative contrastive loss')
     parser.add_argument('--task', type=str, default='newsRec/MIND-small', choices=['newsRec/MIND-small', 'newsRec/MIND-large'], help='Text-based recommendation tasks')

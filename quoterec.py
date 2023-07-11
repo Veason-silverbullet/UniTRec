@@ -31,13 +31,14 @@ def parse_config():
     parser.add_argument('--init_temperature', type=float, default=1, help='Initial temperature')
     parser.add_argument('--max_temperature', type=float, default=100, help='Max temperature')
     parser.add_argument('--batch_size', type=int, default=16, help='Batch size')
+    parser.add_argument('--epoch', type=int, default=10, help='Epoch')
     parser.add_argument('--lr', type=float, default=1e-5, help='Learning rate')
     parser.add_argument('--weight_decay', type=float, default=0, help='Weight decay')
     parser.add_argument('--gradient_clip_norm', type=float, default=1, help='Gradient clip norm')
     parser.add_argument('--lr_warm_up_ratio', type=float, default=0.05, help='Larning rate warm-up ratio')
     parser.add_argument('--fp16', type=int, default=1, choices=[0, 1], help='Whether use fp16')
     parser.add_argument('--gradient_checkpoint', type=int, default=1, choices=[0, 1], help='Whether use gradient checkpointing')
-    parser.add_argument('--negative_sample_num', type=int, default=19, help='Number of negative samples')
+    parser.add_argument('--negative_sample_num', type=int, default=19, help='Number of negative samples') # This configuration empirically follows https://aclanthology.org/2022.acl-long.27
     parser.add_argument('--ppl_loss', type=int, default=1, choices=[0, 1], help='Whether use perplexity contrastive loss')
     parser.add_argument('--dis_loss', type=int, default=1, choices=[0, 1], help='Whether use discriminative contrastive loss')
     parser.add_argument('--task', type=str, default='quoteRec/Reddit-quote', choices=['quoteRec/Reddit-quote', 'quoteRec/QuoteR'], help='Text-based recommendation tasks')
@@ -53,11 +54,9 @@ def parse_config():
     if args.task == 'quoteRec/Reddit-quote':
         args.encoder_seq_len = 1024
         args.decoder_seq_len = 72
-        args.epoch = 12
     elif args.task == 'quoteRec/QuoteR':
         args.encoder_seq_len = 384
         args.decoder_seq_len = 84
-        args.epoch = 10
     else:
         raise Exception('Unexpected quote task : ' + args.task + ' (should be chosen from [\'quoteRec/Reddit-quote\', \'quoteRec/QuoteR\'])')
     assert os.path.exists(args.backbone_model) or args.mode != 'train', 'Backbone BART does not exist at ' + args.backbone_model
