@@ -31,7 +31,7 @@ def parse_config():
     parser.add_argument('--init_temperature', type=float, default=1, help='Initial temperature')
     parser.add_argument('--max_temperature', type=float, default=100, help='Max temperature')
     parser.add_argument('--batch_size', type=int, default=16, help='Batch size')
-    parser.add_argument('--epoch', type=int, default=10, help='Epoch')
+    parser.add_argument('--epoch', type=int, default=6, help='Epoch')
     parser.add_argument('--lr', type=float, default=1e-5, help='Learning rate')
     parser.add_argument('--weight_decay', type=float, default=0, help='Weight decay')
     parser.add_argument('--gradient_clip_norm', type=float, default=1, help='Gradient clip norm')

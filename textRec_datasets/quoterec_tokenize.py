@@ -5,6 +5,7 @@ import json
 import pickle
 import numpy as np
 from transformers.models.bart import BartTokenizer
+import nltk
 BOS_TOKEN_ID = 0
 PAD_TOKEN_ID = 1
 EOS_TOKEN_ID = 2
@@ -29,6 +30,15 @@ if not os.path.exists('../../backbone_models/bart-base'):
     os.system('git lfs install')
     os.system('git clone https://huggingface.co/facebook/bart-base ../../backbone_models/bart-base')
 tokenizer = BartTokenizer.from_pretrained('../../backbone_models/bart-base')
+nltk.download('stopwords')
+stopwords = nltk.corpus.stopwords.words('english')
+stopwords1 = [word for word in stopwords] + [word[0].upper() + word[1:] for word in stopwords] + [word.upper() for word in stopwords]
+stopwords2 = [' ' + word for word in stopwords1]
+stopword_tokens1 = [tokenizer(word, add_special_tokens=False)['input_ids'] for word in stopwords1]
+stopword_tokens2 = [tokenizer(word, add_special_tokens=False)['input_ids'] for word in stopwords2]
+with open('../../backbone_models/bart-base/vocab.json', 'r', encoding='utf-8') as f:
+    tokenizer_vocab = {v: k for k, v in json.load(f).items()}
+IGNORE_TARGET_STOP_WORDS = True # stop words always get low perplexity in languages regardless the context, this is to flag whether ignore target stop words
 
 
 def download_QuoteDatasets():
@@ -121,6 +131,34 @@ def download_QuoteDatasets():
             }, quoter_info_f)
 
 
+def replace_stopword_tokens(tokens: np.array):
+    assert len(tokens.shape) == 1
+    N = tokens.shape[0]
+    for stopword_tokens in stopword_tokens1:
+        M = len(stopword_tokens)
+        for i in range(M):
+            if stopword_tokens[i] != tokens[i]:
+                break
+        else:
+            if tokens[M] != IGNORE_TOKEN_ID and tokenizer_vocab[tokens[M]][0] == 'Ġ':
+                tokens[:M] = IGNORE_TOKEN_ID
+                break
+    for i in range(1, N):
+        if tokens[i] != IGNORE_TOKEN_ID and tokens[i] != PAD_TOKEN_ID:
+            for stopword_tokens in stopword_tokens2:
+                M = len(stopword_tokens)
+                if i + M < N:
+                    for j in range(M):
+                        if stopword_tokens[j] != tokens[i + j]:
+                            break
+                    else:
+                        if tokens[i + M] != IGNORE_TOKEN_ID and tokenizer_vocab[tokens[i + M]][0] == 'Ġ':
+                            tokens[i: i + M] = IGNORE_TOKEN_ID
+                            break
+    assert np.any((tokens != IGNORE_TOKEN_ID) & (tokens != PAD_TOKEN_ID))
+    return tokens
+
+
 def preprocess_datasets(encoder_max_lengths, decoder_max_lengths):
     for dataset_root in [reddit_quote_dataset_root, quoter_dataset_root]:
         # 1. quote token preprocessing
@@ -155,6 +193,8 @@ def preprocess_datasets(encoder_max_lengths, decoder_max_lengths):
             quote_attention_mask[index][:token_num + 1] = True
             assert targets[index][token_num - 1] == EOS_TOKEN_ID
             targets[index][token_num - 1] = IGNORE_TOKEN_ID
+            if IGNORE_TARGET_STOP_WORDS:
+                targets[index] = replace_stopword_tokens(targets[index])
         with open(quote_input_ids_file, 'wb') as f:
             pickle.dump(quote_input_ids, f, protocol=pickle.HIGHEST_PROTOCOL)
         with open(quote_cls_indices_file, 'wb') as f:
