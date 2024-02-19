@@ -24,9 +24,7 @@ The transformer codebase is adapted from [**Huggingface Transoformers**](https:/
 
 
 ## TODO
-1. The codes are now using two GPUs for training and one for inference. Acceleration can be achieved by distributed inference.
-
-2. I plan to release baseline codes, but they are on my rented cloud machines and need time to arrange. As my physical and mental states are quite bad, I try my best to use spare time to pull down, arrange, and release the baseline codes ASAP.
+The codes are now using two GPUs for training and one for inference. Acceleration can be achieved by distributed inference.
 
 
 ## Citation
